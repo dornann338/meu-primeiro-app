@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LucroCerto – Calculadora de Lucro para Marketplaces</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="layout">
+
+  <!-- Menu lateral (abas) -->
+  <aside class="sidebar" id="sidebar" aria-label="Menu principal">
+    <div class="sidebar__brand">
+      <span class="brand__logo" aria-hidden="true">L</span>
+      <div>
+        <strong class="brand__name">LucroCerto</strong>
+        <span class="brand__tag">Mercado Livre e Shopee</span>
+      </div>
+    </div>
+
+    <nav class="nav">
+      <div class="nav__section">Financeiro</div>
+      <!-- Para criar uma nova aba: copie este link, troque o data-aba e crie a <section> correspondente -->
+      <a href="#lucro-total" class="nav__item" data-aba="lucro-total" data-titulo="Lucro total">
+        <svg class="nav__icon" viewBox="0 0 24 24" aria-hidden="true"><polyline points="3 17 9 11 13 15 21 7"/><polyline points="15 7 21 7 21 13"/></svg>
+        <span>Lucro total</span>
+      </a>
+
+      <div class="nav__section">Marketplaces</div>
+      <a href="#olx" class="nav__item" data-aba="olx" data-titulo="OLX">
+        <svg class="nav__icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.6 13.4 13.4 20.6a2 2 0 0 1-2.8 0L3 13V3h10l7.6 7.6a2 2 0 0 1 0 2.8z"/><circle cx="7.5" cy="7.5" r="1.5"/></svg>
+        <span>OLX</span>
+      </a>
+    </nav>
+  </aside>
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <div class="main">
+  <!-- Barra superior -->
+  <header class="topbar">
+    <div class="topbar__inner">
+      <button type="button" class="menu-btn" id="menuBtn" aria-label="Abrir menu" aria-controls="sidebar" aria-expanded="false">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/></svg>
+      </button>
+      <h1 class="page-title" id="tituloPagina">Lucro total</h1>
+    </div>
+  </header>
+
+  <main class="container">
+
+   <!-- ===== ABA: Lucro total ===== -->
+   <section class="aba" id="aba-lucro-total">
+
+    <!-- Dashboard: valores potenciais (1 unidade de cada produto) -->
+    <section class="dashboard" aria-labelledby="tituloDashboard">
+      <div class="dashboard__header">
+        <h2 id="tituloDashboard">Valores potenciais <span class="tag">Estimativa</span></h2>
+        <p class="card__subtitle">Considera 1 unidade de cada produto cadastrado. Não são vendas realizadas.</p>
+      </div>
+
+      <div class="stats stats--potenciais">
+        <div class="stat">
+          <span class="stat__label">Produtos cadastrados</span>
+          <strong class="stat__value" id="statTotal">0</strong>
+        </div>
+        <div class="stat">
+          <span class="stat__label">Custo de aquisição total</span>
+          <strong class="stat__value" id="statCustoTotal">R$ 0,00</strong>
+        </div>
+        <div class="stat">
+          <span class="stat__label">Valor de venda total</span>
+          <strong class="stat__value" id="statVendaTotal">R$ 0,00</strong>
+        </div>
+        <div class="stat stat--destaque">
+          <span class="stat__label">Lucro estimado total</span>
+          <strong class="stat__value" id="statLucroTotal">R$ 0,00</strong>
+          <span class="stat__hint">Potencial, não realizado</span>
+        </div>
+      </div>
+
+      <!-- Indicadores que já existiam -->
+      <div class="stats stats--indicadores">
+        <div class="stat">
+          <span class="stat__label">Lucro médio por venda</span>
+          <strong class="stat__value" id="statLucroMedio">R$ 0,00</strong>
+        </div>
+        <div class="stat">
+          <span class="stat__label">Margem média</span>
+          <strong class="stat__value" id="statMargemMedia">0,00%</strong>
+        </div>
+        <div class="stat">
+          <span class="stat__label">Produtos com prejuízo</span>
+          <strong class="stat__value" id="statPrejuizo">0</strong>
+        </div>
+      </div>
+    </section>
+
+    <div class="grid">
+
+      <!-- Formulário -->
+      <section class="card" aria-labelledby="tituloForm">
+        <div class="card__header">
+          <h2 id="tituloForm">Novo produto</h2>
+          <p class="card__subtitle">Preencha os valores. O resultado aparece na hora.</p>
+        </div>
+
+        <form id="formProduto" novalidate>
+          <input type="hidden" id="produtoId">
+
+          <div class="field">
+            <label for="nome">Nome do produto</label>
+            <input type="text" id="nome" placeholder="Ex.: Fone Bluetooth X200" maxlength="120" autocomplete="off">
+          </div>
+
+          <div class="field">
+            <label for="marketplace">Marketplace</label>
+            <select id="marketplace">
+              <option value="Mercado Livre">Mercado Livre</option>
+              <option value="Shopee">Shopee</option>
+              <option value="Outro">Outro</option>
+            </select>
+          </div>
+
+          <div class="field-row">
+            <div class="field">
+              <label for="custo">Custo de aquisição</label>
+              <div class="input-prefix"><span>R$</span><input type="text" inputmode="decimal" id="custo" placeholder="0,00"></div>
+            </div>
+            <div class="field">
+              <label for="preco">Preço de venda</label>
+              <div class="input-prefix"><span>R$</span><input type="text" inputmode="decimal" id="preco" placeholder="0,00"></div>
+            </div>
+          </div>
+
+          <div class="field-row">
+            <div class="field">
+              <label for="taxa">Taxa do marketplace</label>
+              <div class="input-suffix"><input type="text" inputmode="decimal" id="taxa" placeholder="0,00"><span>%</span></div>
+            </div>
+            <div class="field">
+              <label for="frete">Frete pago por você</label>
+              <div class="input-prefix"><span>R$</span><input type="text" inputmode="decimal" id="frete" placeholder="0,00"></div>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="outras">Outras despesas <small>(embalagem, imposto, tarifa fixa…)</small></label>
+            <div class="input-prefix"><span>R$</span><input type="text" inputmode="decimal" id="outras" placeholder="0,00"></div>
+          </div>
+
+          <!-- Prévia do resultado -->
+          <div class="preview" id="preview">
+            <div class="preview__row"><span>Preço de venda</span><span id="pvPreco">R$ 0,00</span></div>
+            <div class="preview__row muted"><span>(−) Custo do produto</span><span id="pvCusto">R$ 0,00</span></div>
+            <div class="preview__row muted"><span>(−) Taxa do marketplace</span><span id="pvTaxa">R$ 0,00</span></div>
+            <div class="preview__row muted"><span>(−) Frete</span><span id="pvFrete">R$ 0,00</span></div>
+            <div class="preview__row muted"><span>(−) Outras despesas</span><span id="pvOutras">R$ 0,00</span></div>
+            <div class="preview__total">
+              <div>
+                <span class="preview__label">Lucro líquido</span>
+                <strong id="pvLucro">R$ 0,00</strong>
+              </div>
+              <div class="text-right">
+                <span class="preview__label">Margem</span>
+                <strong id="pvMargem">0,00%</strong>
+              </div>
+            </div>
+          </div>
+
+          <p class="form-error" id="formErro" role="alert"></p>
+
+          <div class="actions">
+            <button type="submit" class="btn btn--primary" id="btnSalvar">Cadastrar produto</button>
+            <button type="button" class="btn btn--ghost" id="btnCancelar" hidden>Cancelar edição</button>
+          </div>
+        </form>
+      </section>
+
+      <!-- Lista de produtos -->
+      <section class="card" aria-labelledby="tituloLista">
+        <div class="card__header card__header--flex">
+          <div>
+            <h2 id="tituloLista">Produtos cadastrados</h2>
+            <p class="card__subtitle">Salvos neste navegador.</p>
+          </div>
+          <input type="search" id="busca" class="search" placeholder="Buscar produto…" aria-label="Buscar produto">
+        </div>
+
+        <div class="table-wrap">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Produto</th>
+                <th class="num">Custo</th>
+                <th class="num">Preço</th>
+                <th class="num">Lucro</th>
+                <th class="num">Margem</th>
+                <th class="acoes-col"><span class="sr-only">Ações</span></th>
+              </tr>
+            </thead>
+            <tbody id="listaProdutos"></tbody>
+          </table>
+        </div>
+
+        <div class="empty" id="vazio">
+          <div class="empty__icon" aria-hidden="true">📦</div>
+          <p><strong>Nenhum produto ainda.</strong></p>
+          <p>Cadastre seu primeiro produto no formulário.</p>
+        </div>
+      </section>
+
+    </div>
+   </section>
+   <!-- ===== fim da aba Lucro total ===== -->
+
+   <!-- ===== ABA: OLX (vazia por enquanto) ===== -->
+   <section class="aba" id="aba-olx" hidden>
+   </section>
+
+    <footer class="footer">
+      Os dados ficam salvos apenas neste navegador, neste computador ou celular.
+    </footer>
+  </main>
+  </div><!-- /.main -->
+</div><!-- /.layout -->
+
+  <!-- Aviso rápido (toast) -->
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>

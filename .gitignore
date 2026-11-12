@@ -1,0 +1,23 @@
+# Arquivos que o Git deve IGNORAR (não guardar no histórico)
+
+# Arquivos automáticos do Windows e do macOS
+Thumbs.db
+desktop.ini
+.DS_Store
+
+# Configurações pessoais de editores
+.vscode/
+.idea/
+
+# Arquivos temporários e de log
+*.log
+*.tmp
+~$*
+
+# Segredos (senhas, chaves de API). O app não usa nenhum hoje,
+# mas isto evita que um arquivo desses seja salvo por engano no futuro.
+.env
+.env.*
+
+# Backups exportados com dados reais dos seus produtos (caso um dia exista essa função)
+backup*.json
